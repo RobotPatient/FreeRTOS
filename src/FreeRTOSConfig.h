@@ -48,7 +48,7 @@
 #define configUSE_PREEMPTION			1
 #define configUSE_IDLE_HOOK				1
 #define configUSE_TICK_HOOK				0
-#define configCPU_CLOCK_HZ				( ( unsigned long ) F_CPU  )
+#define configCPU_CLOCK_HZ				48000000
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES			( 9 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 150 )
@@ -65,7 +65,7 @@
 #define configUSE_APPLICATION_TASK_TAG	0
 #define configUSE_COUNTING_SEMAPHORES	1
 #define configUSE_QUEUE_SETS			1
-#define configSUPPORT_STATIC_ALLOCATION 0
+#define configSUPPORT_STATIC_ALLOCATION 1
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
 
 /* Run time stats related definitions. */
@@ -112,7 +112,7 @@ to exclude the API function. */
 // calibration factor for vNopDelayMS in error_hooks.c
 // used to set accuracy of nopDelayMS function
 // this was experimentally chosen from a samd21 processor at 32khz
-#define configCAL_FACTOR (F_CPU/6000)
+#define configCAL_FACTOR (48000000/6000)
 
 /* Arduino framework integration */
 #if 0
@@ -173,4 +173,5 @@ command interpreter running. */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 2048
 
 #endif /* FREERTOS_CONFIG_H */
+
 

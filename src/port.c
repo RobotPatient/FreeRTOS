@@ -431,3 +431,6 @@ void prvSetupTimerInterrupt( void )
 }
 /*-----------------------------------------------------------*/
 
+void SysTick_Handler(void){
+sysTickHook();
+}

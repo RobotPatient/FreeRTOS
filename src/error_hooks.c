@@ -1,30 +1,25 @@
 
 #include "error_hooks.h"
 #include "FreeRTOSConfig.h" //for configCAL_FACTOR
-#include <Arduino.h>
 
 //************************************************************************
 // global variables
 
-int ErrorLed_Pin     	  	= 13; //default arduino led pin
-int ErrorLed_ActiveState  	= HIGH;
 
-Stream *errorSerial 		= NULL;
 //************************************************************************
 
 
 // set the error led to use by the rtos
 void vSetErrorLed(uint8_t pin, uint8_t activeState)
 {
-	ErrorLed_Pin = pin;
-	ErrorLed_ActiveState = activeState;
+
 }
 
 
 // set the error serial port for debugging asserts and crashes
-void vSetErrorSerial(Stream *serial)
+void vSetErrorSerial()
 {
-	errorSerial = serial;
+
 }
 
 
@@ -63,22 +58,6 @@ void rtosFatalError(void)
 // fatal error print out what file assert failed
 void rtosFatalErrorSerial(unsigned long ulLine, const char *pcFileName)
 {
-	if(errorSerial != NULL)
-	{
-		errorSerial->flush();
-		errorSerial->println(F(""));
-		errorSerial->println(F("Fatal Rtos Error"));
-
-		errorSerial->print(F("File: "));
-		errorSerial->println(pcFileName);
-
-		errorSerial->print(F("Line: "));
-		errorSerial->println(ulLine);
-
-		// allow serial port to flush
-		errorSerial->flush();
-		delay(100);
-	}
 
 	// proceed the same as other fatal rtos error
 	rtosFatalError();
@@ -86,29 +65,7 @@ void rtosFatalErrorSerial(unsigned long ulLine, const char *pcFileName)
 
 void rtosFatalErrorSerialPrint(unsigned long ulLine, const char *pcFileName, uint8_t valueA, const char* evaluation, uint8_t valueB)
 {
-	if(errorSerial != NULL)
-	{
-		errorSerial->flush();
-		errorSerial->println(F(""));
-		errorSerial->println(F("Fatal Rtos Error"));
 
-		errorSerial->print(F("File: "));
-		errorSerial->println(pcFileName);
-
-		errorSerial->print(F("Line: "));
-		errorSerial->println(ulLine);
-
-		errorSerial->print(valueA);
-		errorSerial->print(" ");
-		errorSerial->print(evaluation);
-		errorSerial->print(" ");
-		errorSerial->print(valueB);
-		errorSerial->println();
-
-		// allow serial port to flush
-		errorSerial->flush();
-		delay(100);
-	}
 
 	// proceed the same as other fatal rtos error
 	rtosFatalError();
@@ -118,15 +75,7 @@ void rtosFatalErrorSerialPrint(unsigned long ulLine, const char *pcFileName, uin
 void vApplicationMallocFailedHook(void) 
 {
 
-	if(errorSerial != NULL)
-	{
-		errorSerial->println(F(""));
-		errorSerial->println(F("Malloc Failed"));
 
-		// allow serial port to flush
-		errorSerial->flush();
-		delay(100);
-	}
   
 	while (1)
 	{
@@ -138,16 +87,6 @@ void vApplicationMallocFailedHook(void)
 void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
 {
 
-	if(errorSerial != NULL)
-	{
-		errorSerial->println(F(""));
-		errorSerial->print(F("Stack Overflow: "));
-		errorSerial->println(pcTaskName);
-
-		// allow serial port to flush
-		errorSerial->flush();
-		delay(100);
-	}
 
 	while (1)
 	{
@@ -161,17 +100,7 @@ void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
 // blink an error code out the default led when the rtos has crashed
 void errorBlink(int errorNumber)
 {
-  pinMode(ErrorLed_Pin, OUTPUT); 
-  
-  for(int x=0; x<errorNumber; ++x)
-  {
-    digitalWrite(ErrorLed_Pin,  ErrorLed_ActiveState);   
-    vNopDelayMS(100);
-    digitalWrite(ErrorLed_Pin, !ErrorLed_ActiveState);
-    vNopDelayMS(100);   
-  }
 
-  vNopDelayMS(1000);
 }
 
 // will delay the processors using nops

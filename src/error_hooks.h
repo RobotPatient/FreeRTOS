@@ -1,5 +1,3 @@
-
-#include <Arduino.h>
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -12,8 +10,6 @@
 		// Cpp function prototypes
 		//**************************************************
 
-		// set the error serial port for debugging asserts and crashes
-		void vSetErrorSerial(Stream *serial);
 
 	extern "C"
 	{

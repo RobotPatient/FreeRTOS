@@ -1,5 +1,4 @@
 
-#include <Arduino.h>
 #include "FreeRTOS.h"
 
 #ifndef RUN_TIME_STATS_HOOKS_H
